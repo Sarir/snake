@@ -35,7 +35,6 @@ public class SnakeMain {
 			References.started = true;
 		}
 		
-		System.out.println("Game started!");
 		MainLoop loop = new MainLoop();
 		loop.start();
 	}

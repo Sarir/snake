@@ -18,7 +18,7 @@ import ru.Snake.game.components.Type;
 
 public class MainLoop extends Thread{
 	
-	private int width = 16 * References.x, height = 16 * References.y;
+	private int width = 16 * (References.x - 1) + 5, height = 16 * (References.y - 1) + 5;
 	
 	public MainLoop(){
 		startGame();
@@ -29,7 +29,13 @@ public class MainLoop extends Thread{
 	@Override
 	public void run() {
 		// start
-		
+		System.out.println("3 seconds to start!");
+		try {
+			this.sleep(3000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println("Game started!");
 		// Loop
 		while(true){
 			draw();
@@ -52,6 +58,8 @@ public class MainLoop extends Thread{
 		
 		SnakeMain.imageField = new Field();
 		SnakeMain.frame.getContentPane().add(SnakeMain.imageField, BorderLayout.CENTER);
+		
+		draw();
 	}
 	
 	private void draw(){
@@ -123,7 +131,6 @@ public class MainLoop extends Thread{
 						newField[x][y].setSpeed(oldField[x][y].getSpeed());
 						newField[x][y].setType(Type.Snake);
 						
-						System.out.println(oldField[x][y].getSnakeType());
 						
 					} // Head -> Left
 				} else if(oldField[x][y].getSnakeType() == SnakeType.Head && oldField[x][y].getDirection() == Direction.Left){ 
