@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import ru.Snake.SnakeMain;
+import ru.Snake.game.References;
 
 @SuppressWarnings("serial")
 public class Field extends JPanel {
@@ -16,8 +17,8 @@ public class Field extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); 
         
-		for(int i = 0; i < SnakeMain.x; i++){
-			for(int j = 0; j < SnakeMain.y; j++){
+		for(int i = 0; i < References.x; i++){
+			for(int j = 0; j < References.y; j++){
 				if(SnakeMain.field[i][j].getType() != Type.Void){
 					if(SnakeMain.field[i][j].getType() == Type.Apple){
 						try {

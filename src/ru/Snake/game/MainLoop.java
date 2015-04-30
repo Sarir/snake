@@ -15,29 +15,14 @@ import ru.Snake.game.components.Rect;
 import ru.Snake.game.components.SnakeType;
 import ru.Snake.game.components.Type;
 
+
 public class MainLoop extends Thread{
 	
-	private JFrame frame;
-	
-	private int width = 16 * SnakeMain.x, height = 16 * SnakeMain.y;
+	private int width = 16 * References.x, height = 16 * References.y;
 	
 	public MainLoop(){
 		startGame();
 		init();
-		
-		if(!SnakeMain.started){
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						MainLoop loop = new MainLoop();
-						loop.frame.setVisible(true);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});	
-			SnakeMain.started = true;
-		}
 	}
 	
 	@SuppressWarnings("static-access")
@@ -58,24 +43,24 @@ public class MainLoop extends Thread{
 	}
 	
 	private void init(){
-		frame = new JFrame();
-		frame.setBounds(100, 100, width, height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBackground(Color.GRAY);
-		frame.setResizable(false);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		//frame = new JFrame();
+		SnakeMain.frame.setBounds(100, 100, width, height);
+		SnakeMain.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		SnakeMain.frame.setBackground(Color.GRAY);
+		SnakeMain.frame.setResizable(false);
+		SnakeMain.frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		SnakeMain.imageField = new Field();
-		frame.getContentPane().add(SnakeMain.imageField, BorderLayout.CENTER);
+		SnakeMain.frame.getContentPane().add(SnakeMain.imageField, BorderLayout.CENTER);
 	}
 	
 	private void draw(){
-		//SnakeMain.imageField.update(SnakeMain.imageField.getGraphics());
+		SnakeMain.imageField.update(SnakeMain.imageField.getGraphics());
 	}
 	
 	private void startGame(){
-		for(int i = 0; i < SnakeMain.x; i++){
-			for(int j = 0; j < SnakeMain.y; j++){
+		for(int i = 0; i < References.x; i++){
+			for(int j = 0; j < References.y; j++){
 				SnakeMain.field[i][j] = new Rect(null, 0, Type.Void, Direction.Null, SnakeType.Null);
 			}
 		}
@@ -100,13 +85,22 @@ public class MainLoop extends Thread{
 	}
 	
 	private void gameLogic(){
-		Rect[][] newField = SnakeMain.field;
-		Rect[][] oldField = SnakeMain.field;
-		for(int x = 0; x < SnakeMain.x; x++){
-			for(int y = 0; y < SnakeMain.y; y++){
+		Rect[][] newField = new Rect[References.x][References.y];
+		
+		for(int i = 0; i < References.x; i++){
+			for(int j = 0; j < References.y; j++){
+				newField[i][j] = new Rect(null, 0, Type.Void, Direction.Null, SnakeType.Null);
+			}
+		}
+		
+		Rect[][] oldField = new Rect[References.x][References.y];
+		oldField = SnakeMain.field;
+		
+		for(int x = 0; x < References.x; x++){
+			for(int y = 0; y < References.y; y++){
 				// Head -> Right
 				if(oldField[x][y].getSnakeType() == SnakeType.Head && oldField[x][y].getDirection() == Direction.Right){
-					if(x + 1 > SnakeMain.x){
+					if(x + 1 > References.x - 1){
 						gameOver();
 					} else {
 						newField[x+1][y].setDirection(Direction.Right);
@@ -128,6 +122,8 @@ public class MainLoop extends Thread{
 						newField[x][y].setSnakeType(SnakeType.Body);
 						newField[x][y].setSpeed(oldField[x][y].getSpeed());
 						newField[x][y].setType(Type.Snake);
+						
+						System.out.println(oldField[x][y].getSnakeType());
 						
 					} // Head -> Left
 				} else if(oldField[x][y].getSnakeType() == SnakeType.Head && oldField[x][y].getDirection() == Direction.Left){ 
@@ -180,7 +176,7 @@ public class MainLoop extends Thread{
 						
 					} // Head -> Down
 				} else if(oldField[x][y].getSnakeType() == SnakeType.Head && oldField[x][y].getDirection() == Direction.Down){
-					if(y + 1 > SnakeMain.y){
+					if(y + 1 > References.y - 1){
 						gameOver();
 					} else {
 						newField[x][y + 1].setDirection(Direction.Down);
@@ -205,6 +201,7 @@ public class MainLoop extends Thread{
 				}
 			}
 		}
+		SnakeMain.field = newField;
 	}
 	
 	private void gameOver(){
