@@ -3,13 +3,13 @@ package ru.Snake.game.components;
 import java.io.File;
 
 public class Rect {
-	private File img = null;
+	private String img = null;
 	private int speed = 0;
 	private Type type = Type.Void;
 	private Direction direction = Direction.Null;
 	private SnakeType snakeType = SnakeType.Null;
 	
-	public Rect(File img, int speed, Type type, Direction direction, SnakeType snakeType){
+	public Rect(String img, int speed, Type type, Direction direction, SnakeType snakeType){
 		this.img = img;
 		this.speed = speed;
 		this.type = type;
@@ -23,7 +23,7 @@ public class Rect {
 		this.speed = speed;
 	}
 	
-	public void setImg(File img){
+	public void setImg(String img){
 		this.img = img;
 	}
 	
@@ -35,7 +35,7 @@ public class Rect {
 		return this.speed;
 	}
 	
-	public File getImg(){
+	public String getImg(){
 		return this.img;
 	}
 	
@@ -52,7 +52,7 @@ public class Rect {
 	}
 	
 	public void setSnakeType(SnakeType snakeType){
-		this.direction = direction;
+		this.snakeType = snakeType;
 	}
 	
 	public SnakeType getSnakeType(){

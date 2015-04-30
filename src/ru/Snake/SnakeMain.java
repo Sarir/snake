@@ -1,10 +1,13 @@
 package ru.Snake;
 
 import ru.Snake.game.MainLoop;
+import ru.Snake.game.components.Field;
 import ru.Snake.game.components.Rect;
 
 public class SnakeMain {
 
+	public static Field imageField;
+	
 	public static boolean started = false;
 	
 	public static final int x = 10, y = 10;
