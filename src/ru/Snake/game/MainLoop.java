@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.File;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 
 import javax.swing.JFrame;
 
@@ -18,7 +19,7 @@ import ru.Snake.game.components.Type;
 
 public class MainLoop extends Thread{
 	
-	private int width = 16 * (References.x - 1) + 5, height = 16 * (References.y - 1) + 5;
+	private int width = 16 * (References.x - 0) + 6, height = 16 * (References.y - 0) + 6;
 	
 	public MainLoop(){
 		startGame();
@@ -133,7 +134,7 @@ public class MainLoop extends Thread{
 						
 						
 					} // Head -> Left
-				} else if(oldField[x][y].getSnakeType() == SnakeType.Head && oldField[x][y].getDirection() == Direction.Left){ 
+				} else if(oldField[x][y].getSnakeType() == SnakeType.Head && oldField[x][y].getDirection() == Direction.Left){
 					if(x - 1 == -1){
 						gameOver();
 					} else {
@@ -205,6 +206,99 @@ public class MainLoop extends Thread{
 						newField[x][y].setSpeed(oldField[x][y].getSpeed());
 						newField[x][y].setType(Type.Snake);
 					}
+				} else if(oldField[x][y].getSnakeType() == SnakeType.Tail){ // Tail
+					Direction tailDirect = oldField[x][y].getDirection();
+					if(tailDirect == Direction.Left){ // Tail -> Left
+						Direction oldDirect = oldField[x - 1][y].getDirection();
+						if(oldDirect == Direction.Down){
+							newField[x][y + 1].setSnakeType(SnakeType.Tail);
+							newField[x][y + 1].setImg(Pathes.Snake_Down);
+							newField[x][y + 1].setSpeed(oldField[x][y].getSpeed());
+							newField[x][y + 1].setType(Type.Snake);
+							newField[x][y + 1].setDirection(oldDirect);
+						} else if(oldDirect == Direction.Left){
+							newField[x - 1][y].setSnakeType(SnakeType.Tail);
+							newField[x - 1][y].setImg(Pathes.Snake_Left);
+							newField[x - 1][y].setSpeed(oldField[x][y].getSpeed());
+							newField[x - 1][y].setType(Type.Snake);
+							newField[x - 1][y].setDirection(oldDirect);
+						} else if(oldDirect == Direction.Up){
+							newField[x][y - 1].setSnakeType(SnakeType.Tail);
+							newField[x][y - 1].setImg(Pathes.Snake_Up);
+							newField[x][y - 1].setSpeed(oldField[x][y].getSpeed());
+							newField[x][y - 1].setType(Type.Snake);
+							newField[x][y - 1].setDirection(oldDirect);
+						}
+					} else if(tailDirect == Direction.Down){ // Tail -> down
+						Direction oldDirect = oldField[x][y + 1].getDirection();
+						if(oldDirect == Direction.Down){
+							newField[x][y + 1].setSnakeType(SnakeType.Tail);
+							newField[x][y + 1].setImg(Pathes.Snake_Down);
+							newField[x][y + 1].setSpeed(oldField[x][y].getSpeed());
+							newField[x][y + 1].setType(Type.Snake);
+							newField[x][y + 1].setDirection(oldDirect);
+						} else if(oldDirect == Direction.Left){
+							newField[x - 1][y].setSnakeType(SnakeType.Tail);
+							newField[x - 1][y].setImg(Pathes.Snake_Left);
+							newField[x - 1][y].setSpeed(oldField[x][y].getSpeed());
+							newField[x - 1][y].setType(Type.Snake);
+							newField[x - 1][y].setDirection(oldDirect);
+						} else if(oldDirect == Direction.Right){
+							newField[x + 1][y].setSnakeType(SnakeType.Tail);
+							newField[x + 1][y].setImg(Pathes.Snake_Right);
+							newField[x + 1][y].setSpeed(oldField[x][y].getSpeed());
+							newField[x + 1][y].setType(Type.Snake);
+							newField[x + 1][y].setDirection(oldDirect);
+						}
+					} else if(tailDirect == Direction.Right){ // Tail -> Right
+						Direction oldDirect = oldField[x + 1][y].getDirection();
+						if(oldDirect == Direction.Down){
+							newField[x][y + 1].setSnakeType(SnakeType.Tail);
+							newField[x][y + 1].setImg(Pathes.Snake_Down);
+							newField[x][y + 1].setSpeed(oldField[x][y].getSpeed());
+							newField[x][y + 1].setType(Type.Snake);
+							newField[x][y + 1].setDirection(oldDirect);
+						} else if(oldDirect == Direction.Right){
+							newField[x + 1][y].setSnakeType(SnakeType.Tail);
+							newField[x + 1][y].setImg(Pathes.Snake_Right);
+							newField[x + 1][y].setSpeed(oldField[x][y].getSpeed());
+							newField[x + 1][y].setType(Type.Snake);
+							newField[x + 1][y].setDirection(oldDirect);
+						} else if(oldDirect == Direction.Up){
+							newField[x][y - 1].setSnakeType(SnakeType.Tail);
+							newField[x][y - 1].setImg(Pathes.Snake_Up);
+							newField[x][y - 1].setSpeed(oldField[x][y].getSpeed());
+							newField[x][y - 1].setType(Type.Snake);
+							newField[x][y - 1].setDirection(oldDirect);
+						}
+					} else if(tailDirect == Direction.Up){ // Tail -> Up
+						Direction oldDirect = oldField[x][y - 1].getDirection();
+						if(oldDirect == Direction.Right){
+							newField[x + 1][y].setSnakeType(SnakeType.Tail);
+							newField[x + 1][y].setImg(Pathes.Snake_Right);
+							newField[x + 1][y].setSpeed(oldField[x][y].getSpeed());
+							newField[x + 1][y].setType(Type.Snake);
+							newField[x + 1][y].setDirection(oldDirect);
+						} else if(oldDirect == Direction.Left){
+							newField[x - 1][y].setSnakeType(SnakeType.Tail);
+							newField[x - 1][y].setImg(Pathes.Snake_Left);
+							newField[x - 1][y].setSpeed(oldField[x][y].getSpeed());
+							newField[x - 1][y].setType(Type.Snake);
+							newField[x - 1][y].setDirection(oldDirect);
+						} else if(oldDirect == Direction.Up){
+							newField[x][y - 1].setSnakeType(SnakeType.Tail);
+							newField[x][y - 1].setImg(Pathes.Snake_Up);
+							newField[x][y - 1].setSpeed(oldField[x][y].getSpeed());
+							newField[x][y - 1].setType(Type.Snake);
+							newField[x][y - 1].setDirection(oldDirect);
+						}
+					}
+					
+					oldField[x][y].setDirection(Direction.Null);
+					oldField[x][y].setImg(null);
+					oldField[x][y].setSnakeType(SnakeType.Null);
+					oldField[x][y].setSpeed(0);
+					oldField[x][y].setType(Type.Void);
 				}
 			}
 		}
