@@ -1,6 +1,9 @@
 package ru.Snake.game;
 
+import java.util.ArrayList;
+
 import ru.Snake.game.components.Direction;
+import ru.Snake.game.components.Rect;
 
 public class References {
 
@@ -14,7 +17,9 @@ public class References {
 	
 	public static int secondsToStart = 3;
 	
-	public static int gameTick = 500;
+	public static int gameTick = 200;
+	
+	public static ArrayList<Rect> snake = new ArrayList<Rect>();
 	
 	public static void setCoord(int x, int y, Direction direct){
 		References.headX = x;

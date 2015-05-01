@@ -21,14 +21,14 @@ public class Input extends Thread{
 			@Override
 	        public boolean dispatchKeyEvent(KeyEvent ke) {
 	        	if(ke.getID() == ke.KEY_PRESSED){
-	        		if(ke.getKeyCode() == ke.VK_UP && References.headDirection != Direction.Down){
-	        			MainLoop.changeDirection(SnakeMain.field[References.headX][References.headY], Direction.Up);
-	        		} else if(ke.getKeyCode() == ke.VK_DOWN && References.headDirection != Direction.Up){
-	        			MainLoop.changeDirection(SnakeMain.field[References.headX][References.headY], Direction.Down);
-	        		} else if(ke.getKeyCode() == ke.VK_RIGHT && References.headDirection != Direction.Left){
-	        			MainLoop.changeDirection(SnakeMain.field[References.headX][References.headY], Direction.Right);
-	        		} else if(ke.getKeyCode() == ke.VK_LEFT && References.headDirection != Direction.Right){
-	        			MainLoop.changeDirection(SnakeMain.field[References.headX][References.headY], Direction.Left);
+	        		if(ke.getKeyCode() == ke.VK_UP && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Down){
+	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Up);
+	        		} else if(ke.getKeyCode() == ke.VK_DOWN && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Up){
+	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Down);
+	        		} else if(ke.getKeyCode() == ke.VK_RIGHT && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Left){
+	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Right);
+	        		} else if(ke.getKeyCode() == ke.VK_LEFT && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Right){
+	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Left);
 	        		}
 	        	}
 	        	return false;

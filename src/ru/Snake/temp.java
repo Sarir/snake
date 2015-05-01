@@ -1,12 +1,9 @@
 package ru.Snake;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import java.awt.Canvas;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
 import javax.swing.JPanel;
 
 public class temp {

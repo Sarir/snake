@@ -2,10 +2,7 @@ package ru.Snake.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-import java.io.File;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -37,6 +34,7 @@ public class MainLoop extends Thread{
 			e1.printStackTrace();
 		}
 		System.out.println("Game started!");
+		@SuppressWarnings("unused")
 		Input keyboard = new Input(); // Keyboard
 		// Loop
 		while(true){
@@ -66,16 +64,25 @@ public class MainLoop extends Thread{
 	
 	private void draw(){
 		SnakeMain.imageField.update(SnakeMain.imageField.getGraphics());
+		SnakeMain.frame.update(SnakeMain.frame.getGraphics());
 	}
 	
 	private void startGame(){
-		for(int i = 0; i < References.x; i++){
-			for(int j = 0; j < References.y; j++){
-				SnakeMain.field[i][j] = new Rect(null, 0, Type.Void, Direction.Null, SnakeType.Null);
+		for(int x = 0; x < References.x; x++){
+			for(int y = 0; y < References.y; y++){
+				SnakeMain.field[x][y] = new Rect(null, 0, Type.Void, Direction.Null, SnakeType.Null, x, y);
 			}
 		}
 		
-		// Head
+		References.snake.add(new Rect(Pathes.Snake_Right, 0, Type.Snake, Direction.Right, SnakeType.Tail, 0, 0)); // Tail
+		References.snake.add(new Rect(Pathes.Snake_Horisontal, 0, Type.Snake, Direction.Right, SnakeType.Body, 1, 0));
+		References.snake.add(new Rect(Pathes.Snake_Horisontal, 0, Type.Snake, Direction.Right, SnakeType.Body, 2, 0));
+		References.snake.add(new Rect(Pathes.Snake_Left, 0, Type.Snake, Direction.Right, SnakeType.Head, 3, 0)); // Head
+		
+		for(int i = 0; i < References.snake.size(); i++){
+			SnakeMain.field[References.snake.get(i).getX()][References.snake.get(i).getY()] = References.snake.get(i);
+		}
+		/*// Head
 		SnakeMain.field[4][3].setSnakeType(SnakeType.Head);
 		SnakeMain.field[4][3].setDirection(Direction.Right);
 		SnakeMain.field[4][3].setType(Type.Snake);
@@ -110,7 +117,7 @@ public class MainLoop extends Thread{
 		SnakeMain.field[1][1].setSnakeType(SnakeType.Tail);
 		SnakeMain.field[1][1].setDirection(Direction.Right);
 		SnakeMain.field[1][1].setType(Type.Snake);
-		SnakeMain.field[1][1].setImg(Pathes.Snake_Right);
+		SnakeMain.field[1][1].setImg(Pathes.Snake_Right);*/
 	}
 	
 	private void gameLogic(){
@@ -118,16 +125,176 @@ public class MainLoop extends Thread{
 		
 		for(int i = 0; i < References.x; i++){
 			for(int j = 0; j < References.y; j++){
-				newField[i][j] = new Rect(null, 0, Type.Void, Direction.Null, SnakeType.Null);
+				newField[i][j] = new Rect(null, 0, Type.Void, Direction.Null, SnakeType.Null, 0, 0);
 			}
 		}
 		
-		Rect[][] oldField = new Rect[References.x][References.y];
-		oldField = SnakeMain.field;
+		ArrayList<Rect> snake = new ArrayList<Rect>();
+		
+		for(int i = 0; i < References.snake.size(); i++){
+			if(References.snake.get(i).getSnakeType() == SnakeType.Tail && i == 0){
+				String img = null;
+				int speed = References.snake.get(i + 1).getSpeed();
+				Type type = References.snake.get(i + 1).getType();
+				Direction direction = References.snake.get(i + 1).getDirection();
+				SnakeType snakeType = SnakeType.Tail;
+				int oldX = References.snake.get(i + 1).getX();
+				int oldY = References.snake.get(i + 1).getY();
+				int newX = 0;
+				int newY = 0;
+				
+				if(!isBorder(oldX, oldY, Direction.Up) && direction == Direction.Up){
+					newX = oldX;
+					newY = oldY - 1;
+					img = Pathes.Snake_Up;
+				} else if(!isBorder(oldX, oldY, Direction.Down) && direction == Direction.Down){
+					newX = oldX;
+					newY = oldY + 1;
+					img = Pathes.Snake_Down;
+				} else if(!isBorder(oldX, oldY, Direction.Right) && direction == Direction.Right){
+					newX = oldX + 1;
+					newY = oldY;
+					img = Pathes.Snake_Right;
+				} else if(!isBorder(oldX, oldY, Direction.Left) && direction == Direction.Left){
+					newX = oldX - 1;
+					newY = oldY;
+					img = Pathes.Snake_Left;
+				}
+				
+				snake.add(new Rect(img, speed, type, direction, snakeType, newX, newY));
+			}
+			
+			if(References.snake.get(i).getSnakeType() == SnakeType.Body){
+				String img = null;
+				int speed = References.snake.get(i + 1).getSpeed();
+				Type type = References.snake.get(i + 1).getType();
+				Direction direction = References.snake.get(i + 1).getDirection();
+				SnakeType snakeType = SnakeType.Body;
+				int oldX = References.snake.get(i + 1).getX();
+				int oldY = References.snake.get(i + 1).getY();
+				int newX = 0;
+				int newY = 0;
+				
+				if(i != References.snake.size() - 2){
+					snake.add(References.snake.get(i + 1));
+				} else {
+					Direction prevRect = References.snake.get(i - 1).getDirection();
+					System.out.println("PrevRect: " + prevRect);
+					if(prevRect == Direction.Down){
+						System.out.println("PrevRect_Down: " + prevRect);
+						if(direction == Direction.Down){
+							img = Pathes.Snake_Vertical;
+						} else if(direction == Direction.Left){
+							img = Pathes.Snake_Angel_4;
+						} else if(direction == Direction.Right){
+							img = Pathes.Snake_Angel_1;
+						}
+					} else if(prevRect == Direction.Left){
+						System.out.println("PrevRect_Left: " + prevRect);
+						if(direction == Direction.Left){
+							img = Pathes.Snake_Vertical;
+						} else if(direction == Direction.Down){
+							img = Pathes.Snake_Angel_3;
+						} else if(direction == Direction.Up){
+							img = Pathes.Snake_Angel_4;
+						}
+					} else if(prevRect == Direction.Right){
+						System.out.println("PrevRect_Right: " + prevRect);
+						if(direction == Direction.Down){
+							img = Pathes.Snake_Angel_3;
+						} else if(direction == Direction.Right){
+							img = Pathes.Snake_Horisontal;
+						} else if(direction == Direction.Up){
+							img = Pathes.Snake_Angel_1;
+						}
+					} else if(prevRect == Direction.Up){
+						System.out.println("PrevRect_Up: " + prevRect);
+						if(direction == Direction.Left){
+							img = Pathes.Snake_Angel_3;
+						} else if(direction == Direction.Right){
+							img = Pathes.Snake_Angel_2;
+						} else if(direction == Direction.Up){
+							img = Pathes.Snake_Vertical;
+						}
+					}
+					
+					if(!isBorder(oldX, oldY, Direction.Up) && direction == Direction.Up){
+						newX = oldX;
+						newY = oldY - 1;
+					} else if(!isBorder(oldX, oldY, Direction.Down) && direction == Direction.Down){
+						newX = oldX;
+						newY = oldY + 1;
+					} else if(!isBorder(oldX, oldY, Direction.Right) && direction == Direction.Right){
+						newX = oldX + 1;
+						newY = oldY;
+					} else if(!isBorder(oldX, oldY, Direction.Left) && direction == Direction.Left){
+						newX = oldX - 1;
+						newY = oldY;
+					}
+					
+					snake.add(new Rect(img, speed, type, direction, snakeType, newX, newY));
+				}
+			}
+			
+			if(References.snake.get(i).getSnakeType() == SnakeType.Head && i == References.snake.size() - 1){
+				String img = null;
+				int speed = References.snake.get(i).getSpeed();
+				Type type = References.snake.get(i).getType();
+				Direction direction = References.snake.get(i).getDirection();
+				SnakeType snakeType = SnakeType.Head;
+				int oldX = References.snake.get(i).getX();
+				int oldY = References.snake.get(i).getY();
+				int newX = 0;
+				int newY = 0;
+				
+				if(!isBorder(oldX, oldY, Direction.Up) && direction == Direction.Up){
+					newX = oldX;
+					newY = oldY - 1;
+					img = Pathes.Snake_Down;
+				} else if(!isBorder(oldX, oldY, Direction.Down) && direction == Direction.Down){
+					newX = oldX;
+					newY = oldY + 1;
+					img = Pathes.Snake_Up;
+				} else if(!isBorder(oldX, oldY, Direction.Right) && direction == Direction.Right){
+					newX = oldX + 1;
+					newY = oldY;
+					img = Pathes.Snake_Left;
+				} else if(!isBorder(oldX, oldY, Direction.Left) && direction == Direction.Left){
+					newX = oldX - 1;
+					newY = oldY;
+					img = Pathes.Snake_Right;
+				} else if(isBorder(oldX, oldY, Direction.Up) || isBorder(oldX, oldY, Direction.Down) || isBorder(oldX, oldY, Direction.Right) || isBorder(oldX, oldY, Direction.Left)){
+					gameOver();
+				}
+				
+				snake.add(new Rect(img, speed, type, direction, snakeType, newX, newY));
+			}
+		}
+		
+		References.snake = snake;
+		
+		for(int i = 0; i < snake.size(); i++){
+			newField[snake.get(i).getX()][snake.get(i).getY()] = snake.get(i);
+		}
+		
+		SnakeMain.field = newField;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		// Head
-		for(int x = 0; x < References.x; x++){
+		/*for(int x = 0; x < References.x; x++){
 			for(int y = 0; y < References.y; y++){
 				if(oldField[x][y].getSnakeType() == SnakeType.Head){
 					if(oldField[x][y].getDirection() == Direction.Right){ // Head to Right
@@ -154,7 +321,7 @@ public class MainLoop extends Thread{
 							newField[x][y].setSpeed(oldField[x][y].getSpeed());
 							newField[x][y].setType(Type.Snake);
 							
-							/*if(oldField[x][y].getDirection() == Direction.Right){ // Едем вправо
+							if(oldField[x][y].getDirection() == Direction.Right){ // Едем вправо
 								if(!isBorder(x, y, Direction.Up) && oldField[x][y - 1].getType() == Type.Snake){ // Сверху змея
 									newField[x + 1][y].setDirection(Direction.Up);
 									newField[x + 1][y].setImg(Pathes.Snake_Angel_4);
@@ -169,7 +336,7 @@ public class MainLoop extends Thread{
 								newField[x + 1][y].setSpeed(oldField[x][y].getSpeed());
 								newField[x + 1][y].setType(Type.Snake);
 								newField[x + 1][y].setSnakeType(SnakeType.Body);
-							}*/
+							}
 							
 							References.setCoord(x + 1, y, Direction.Right);
 						}
@@ -262,9 +429,9 @@ public class MainLoop extends Thread{
 			for(int y = 0; y < References.y; y++){
 				if(oldField[x][y].getSnakeType() == SnakeType.Body){ // Body
 					
-					newField[x][y] = oldField[x][y];
+					//newField[x][y] = oldField[x][y];
 					
-					/*Direction bodyDir = oldField[x][y].getDirection(); 
+					Direction bodyDir = oldField[x][y].getDirection(); 
 					
 					if(bodyDir == Direction.Down){ // Едем вниз
 						if(!isBorder(x, y, Direction.Up) && oldField[x][y - 1].getType() == Type.Snake){ // Сверху нас змея
@@ -338,20 +505,20 @@ public class MainLoop extends Thread{
 							newField[x + 1][y].setType(Type.Snake);
 							
 						}
-					}*/
+					}
 					
 				}
 			}
 		}
 		
 		// Tail
-		for(int x = 0; x < References.x; x++){
+		/*for(int x = 0; x < References.x; x++){
 			for(int y = 0; y < References.y; y++){
 				if(oldField[x][y].getSnakeType() == SnakeType.Tail){ // Tail
 					
 					Direction tailDirect = oldField[x][y].getDirection();
 					
-					System.out.println(tailDirect);
+					System.out.println("TailDirect: " + tailDirect);
 					
 					if(tailDirect == Direction.Left){ // Tail -> Left
 						Direction oldDirect = oldField[x - 1][y].getDirection();
@@ -375,7 +542,11 @@ public class MainLoop extends Thread{
 							newField[x - 1][y].setDirection(oldDirect);
 						}
 					} else if(tailDirect == Direction.Down){ // Tail -> down
-						Direction oldDirect = oldField[x][y + 1].getDirection();
+						
+						Direction oldDirect = oldField[x][y].getDirection();
+						
+						System.out.println("OldDirect_Down: " + oldDirect);
+						
 						if(oldDirect == Direction.Down){
 							newField[x][y + 1].setSnakeType(SnakeType.Tail);
 							newField[x][y + 1].setImg(Pathes.Snake_Down);
@@ -396,7 +567,10 @@ public class MainLoop extends Thread{
 							newField[x][y + 1].setDirection(oldDirect);
 						}
 					} else if(tailDirect == Direction.Right){ // Tail -> Right
+						
 						Direction oldDirect = oldField[x + 1][y].getDirection();
+						
+						System.out.println("OldDirect_Right: " + oldDirect);
 						
 						if(oldDirect == Direction.Down){
 							newField[x + 1][y].setSnakeType(SnakeType.Tail);
@@ -449,9 +623,7 @@ public class MainLoop extends Thread{
 					break;
 				}		
 			}
-		}
-		
-		SnakeMain.field = newField;
+		}*/
 	}
 	
 	public static Rect changeDirection(Rect rect, Direction direct){

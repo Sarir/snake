@@ -2,7 +2,6 @@ package ru.Snake.game.components;
 
 import java.awt.Graphics;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
