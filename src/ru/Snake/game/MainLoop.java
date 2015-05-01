@@ -325,24 +325,76 @@ public class MainLoop extends Thread{
 					Direction bodyDir = oldField[x][y].getDirection(); 
 					
 					if(bodyDir == Direction.Down){ // Едем вниз
-						if(!isBorder(x, y, Direction.Down)){
-							if(oldField[x][y - 1].getType() == Type.Snake){ // Сверху нас змея
-								if(oldField[x][y + 1].getType() == Type.Snake){ // Снизу змея
-									newField[x][y + 1].setDirection(Direction.Down);
-									newField[x][y + 1].setImg(Pathes.Snake_Vertical);
-								} else if(oldField[x - 1][y].getType() == Type.Snake){ // Слево змея
-									newField[x][y + 1].setDirection(Direction.Left);
-									newField[x][y + 1].setImg(Pathes.Snake_Angel_4);
-								} else if(oldField[x + 1][y].getType() == Type.Snake){ // Справо змея
-									newField[x][y + 1].setDirection(Direction.Right);
-									newField[x][y + 1].setImg(Pathes.Snake_Angel_1);
-								}
-								
-								newField[x][y + 1].setSnakeType(oldField[x][y].getSnakeType());
-								newField[x][y + 1].setSpeed(oldField[x][y].getSpeed());
-								newField[x][y + 1].setType(Type.Snake);
-								
+						if(!isBorder(x, y, Direction.Up) && oldField[x][y - 1].getType() == Type.Snake){ // Сверху нас змея
+							if(!isBorder(x, y, Direction.Down) && oldField[x][y + 1].getType() == Type.Snake){ // Снизу змея
+								newField[x][y + 1].setDirection(Direction.Down);
+								newField[x][y + 1].setImg(Pathes.Snake_Vertical);
+							} else if(!isBorder(x, y, Direction.Left) && oldField[x - 1][y].getType() == Type.Snake){ // Слево змея
+								newField[x][y + 1].setDirection(Direction.Left);
+								newField[x][y + 1].setImg(Pathes.Snake_Angel_4);
+							} else if(!isBorder(x, y, Direction.Right) && oldField[x + 1][y].getType() == Type.Snake){ // Справо змея
+								newField[x][y + 1].setDirection(Direction.Right);
+								newField[x][y + 1].setImg(Pathes.Snake_Angel_1);
 							}
+							
+							newField[x][y + 1].setSnakeType(oldField[x][y].getSnakeType());
+							newField[x][y + 1].setSpeed(oldField[x][y].getSpeed());
+							newField[x][y + 1].setType(Type.Snake);
+							
+						}
+					} else if(bodyDir == Direction.Up){ // Едем вверх
+						if(!isBorder(x, y, Direction.Down) && oldField[x][y + 1].getType() == Type.Snake){ // Снизу нас змея
+							if(!isBorder(x, y, Direction.Up) && oldField[x][y - 1].getType() == Type.Snake){ // Сверху змея
+								newField[x][y - 1].setDirection(Direction.Up);
+								newField[x][y - 1].setImg(Pathes.Snake_Vertical);
+							} else if(!isBorder(x, y, Direction.Left) && oldField[x - 1][y].getType() == Type.Snake){ // Слево змея
+								newField[x][y - 1].setDirection(Direction.Left);
+								newField[x][y - 1].setImg(Pathes.Snake_Angel_3);
+							} else if(!isBorder(x, y, Direction.Right) && oldField[x + 1][y].getType() == Type.Snake){ // Справо змея
+								newField[x][y - 1].setDirection(Direction.Right);
+								newField[x][y - 1].setImg(Pathes.Snake_Angel_2);
+							}
+							
+							newField[x][y - 1].setSnakeType(oldField[x][y].getSnakeType());
+							newField[x][y - 1].setSpeed(oldField[x][y].getSpeed());
+							newField[x][y - 1].setType(Type.Snake);
+							
+						}
+					} else if(bodyDir == Direction.Left){ // Едем влево
+						if(!isBorder(x, y, Direction.Left) && oldField[x + 1][y].getType() == Type.Snake){ // Справа нас змея
+							if(!isBorder(x, y, Direction.Up) && oldField[x][y - 1].getType() == Type.Snake){ // Сверху змея
+								newField[x - 1][y].setDirection(Direction.Up);
+								newField[x - 1][y].setImg(Pathes.Snake_Angel_1);
+							} else if(!isBorder(x, y, Direction.Left) && oldField[x - 1][y].getType() == Type.Snake){ // Слево змея
+								newField[x - 1][y].setDirection(Direction.Left);
+								newField[x - 1][y].setImg(Pathes.Snake_Horisontal);
+							}else if(!isBorder(x, y, Direction.Down) && oldField[x][y + 1].getType() == Type.Snake){ // Снизу змея
+								newField[x - 1][y].setDirection(Direction.Down);
+								newField[x - 1][y].setImg(Pathes.Snake_Angel_2);
+							}
+							
+							newField[x - 1][y].setSnakeType(oldField[x][y].getSnakeType());
+							newField[x - 1][y].setSpeed(oldField[x][y].getSpeed());
+							newField[x - 1][y].setType(Type.Snake);
+							
+						}
+					} else if(bodyDir == Direction.Right){ // Едем вправо
+						if(!isBorder(x, y, Direction.Right) && oldField[x + 1][y].getType() == Type.Snake){ // Слева от нас змея
+							if(!isBorder(x, y, Direction.Up) && oldField[x][y - 1].getType() == Type.Snake){ // Сверху змея
+								newField[x + 1][y].setDirection(Direction.Up);
+								newField[x + 1][y].setImg(Pathes.Snake_Angel_4);
+							} else if(!isBorder(x, y, Direction.Down) && oldField[x][y + 1].getType() == Type.Snake){ // Снизу змея
+								newField[x + 1][y].setDirection(Direction.Down);
+								newField[x + 1][y].setImg(Pathes.Snake_Angel_3);
+							} else if(!isBorder(x, y, Direction.Right) && oldField[x + 1][y].getType() == Type.Snake){ // Справо змея
+								newField[x + 1][y].setDirection(Direction.Right);
+								newField[x + 1][y].setImg(Pathes.Snake_Horisontal);
+							}
+							
+							newField[x + 1][y].setSnakeType(oldField[x][y].getSnakeType());
+							newField[x + 1][y].setSpeed(oldField[x][y].getSpeed());
+							newField[x + 1][y].setType(Type.Snake);
+							
 						}
 					}
 				}
