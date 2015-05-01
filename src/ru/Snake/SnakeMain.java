@@ -3,6 +3,7 @@ package ru.Snake;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import ru.Snake.game.MainLoop;
 import ru.Snake.game.References;
@@ -25,7 +26,6 @@ public class SnakeMain {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						//loop = new SnakeMain();
 						SnakeMain.frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -34,7 +34,7 @@ public class SnakeMain {
 			});	
 			References.started = true;
 		}
-		
+		JOptionPane.showMessageDialog(null, "Welcome to Snake. Press \" OK \" to start, after 3 seconds!");
 		MainLoop loop = new MainLoop();
 		loop.start();
 	}

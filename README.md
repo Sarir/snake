@@ -1,2 +1,3 @@
-# snake
-game snake
+Basic Snake.
+
+Authors: Serious07 and Sarir.

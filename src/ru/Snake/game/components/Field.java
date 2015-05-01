@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import ru.Snake.SnakeMain;
 import ru.Snake.game.References;
 
 @SuppressWarnings("serial")
@@ -13,7 +14,8 @@ public class Field extends JPanel {
 	
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g); 
+        //super.paintComponent(g);
+    	SnakeMain.frame.repaint();
         for(int i = 0; i < References.snake.size(); i++){
 			try {		
 				g.drawImage(ImageIO.read(getClass().getResource(References.snake.get(i).getImg())), References.snake.get(i).getX() * 16, References.snake.get(i).getY() * 16, this);

@@ -17,13 +17,17 @@ public class References {
 	
 	public static int secondsToStart = 3;
 	
-	public static int gameTick = 300;
+	public static int gameTick = 500;
+	
+	public static int decrGameTick = 5;
 	
 	public static ArrayList<Rect> snake = new ArrayList<Rect>();
 	
 	public static ArrayList<Rect> apples = new ArrayList<Rect>();
 	
 	public static int grow = 0;
+	
+	public static int score = 0;
 	
 	public static void setCoord(int x, int y, Direction direct){
 		References.headX = x;

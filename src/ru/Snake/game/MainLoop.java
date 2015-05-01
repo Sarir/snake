@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import ru.Snake.SnakeMain;
 import ru.Snake.game.components.Direction;
@@ -17,7 +18,7 @@ import ru.Snake.game.components.Type;
 
 public class MainLoop extends Thread{
 	
-	private int width = 16 * (References.x - 0) + 6, height = 16 * (References.y - 0) + 6;
+	private int width = 16 * (References.x - 0) + 6, height = 16 * (References.y - 0) + 9;
 	
 	public MainLoop(){
 		startGame();
@@ -28,13 +29,11 @@ public class MainLoop extends Thread{
 	@Override
 	public void run() {
 		// start
-		System.out.println("3 seconds to start!");
 		try {
 			this.sleep(References.secondsToStart * 1000);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("Game started!");
 		@SuppressWarnings("unused")
 		Input keyboard = new Input(); // Keyboard
 		// Loop
@@ -51,13 +50,16 @@ public class MainLoop extends Thread{
 	
 	private void init(){
 		SnakeMain.frame.setBounds(100, 100, width, height);
+		SnakeMain.frame.setLocationRelativeTo(null);
 		SnakeMain.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SnakeMain.frame.setBackground(Color.BLACK);
 		SnakeMain.frame.setResizable(false);
 		SnakeMain.frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
+		
 		SnakeMain.imageField = new Field();
 		SnakeMain.imageField.setBackground(Color.BLACK);
+		SnakeMain.imageField.setDoubleBuffered(true);
 		SnakeMain.frame.getContentPane().add(SnakeMain.imageField, BorderLayout.CENTER);
 		
 		draw();
@@ -98,6 +100,8 @@ public class MainLoop extends Thread{
 					References.apples.remove(i);
 					addApple();
 					References.grow++;
+					References.score++;
+					References.gameTick -= References.decrGameTick;
 				}
 			}
 		}
@@ -342,7 +346,7 @@ public class MainLoop extends Thread{
 	}
 	
 	private void gameOver(){
-		System.out.println("Game Over!");
+		JOptionPane.showMessageDialog(null, "Game Over! Your score: " + References.score);
 		System.exit(0);
 	}
 }
