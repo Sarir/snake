@@ -44,6 +44,8 @@ public class MainLoop extends Thread{
 			System.out.println("ArraySize: " + References.snake.size());
 			for(int i = 0; i < References.snake.size(); i++){
 				System.out.println("SnType: " + References.snake.get(i).getSnakeType());
+				System.out.println("X: " + References.snake.get(i).getX());
+				System.out.println("Y: " + References.snake.get(i).getY());
 			}
 			try {
 				this.sleep(References.gameTick);
@@ -68,7 +70,7 @@ public class MainLoop extends Thread{
 	}
 	
 	private void draw(){
-		SnakeMain.imageField.update(SnakeMain.imageField.getGraphics());
+		//SnakeMain.imageField.update(SnakeMain.imageField.getGraphics());
 		SnakeMain.frame.update(SnakeMain.frame.getGraphics());
 	}
 	
@@ -139,34 +141,24 @@ public class MainLoop extends Thread{
 		for(int i = 0; i < References.snake.size(); i++){
 			if(References.snake.get(i).getSnakeType() == SnakeType.Tail && i == 0){
 				String img = null;
-				int speed = References.snake.get(i).getSpeed();
-				Type type = References.snake.get(i).getType();
-				Direction direction = References.snake.get(i).getDirection();
+				int speed = References.snake.get(i + 1).getSpeed();
+				Type type = References.snake.get(i + 1).getType();
+				Direction direction = References.snake.get(i + 1).getDirection();
 				SnakeType snakeType = SnakeType.Tail;
-				int oldX = References.snake.get(i).getX();
-				int oldY = References.snake.get(i).getY();
-				int newX = 0;
-				int newY = 0;
+				int x = References.snake.get(i + 1).getX();
+				int y = References.snake.get(i + 1).getY();
 				
-				if(!isBorder(oldX, oldY, Direction.Up) && direction == Direction.Up){
-					newX = oldX;
-					newY = oldY - 1;
+				if(!isBorder(x, y, Direction.Up) && direction == Direction.Up){
 					img = Pathes.Snake_Up;
-				} else if(!isBorder(oldX, oldY, Direction.Down) && direction == Direction.Down){
-					newX = oldX;
-					newY = oldY + 1;
+				} else if(!isBorder(x, y, Direction.Down) && direction == Direction.Down){
 					img = Pathes.Snake_Down;
-				} else if(!isBorder(oldX, oldY, Direction.Right) && direction == Direction.Right){
-					newX = oldX + 1;
-					newY = oldY;
+				} else if(!isBorder(x, y, Direction.Right) && direction == Direction.Right){
 					img = Pathes.Snake_Right;
-				} else if(!isBorder(oldX, oldY, Direction.Left) && direction == Direction.Left){
-					newX = oldX - 1;
-					newY = oldY;
+				} else if(!isBorder(x, y, Direction.Left) && direction == Direction.Left){
 					img = Pathes.Snake_Left;
 				}
 				
-				snake.add(new Rect(img, speed, type, direction, snakeType, newX, newY));
+				snake.add(i, new Rect(img, speed, type, direction, snakeType, x, y));
 			}
 			
 			if(References.snake.get(i).getSnakeType() == SnakeType.Body){
@@ -177,64 +169,43 @@ public class MainLoop extends Thread{
 				SnakeType snakeType = SnakeType.Body;
 				int oldX = References.snake.get(i + 1).getX();
 				int oldY = References.snake.get(i + 1).getY();
-				int newX = 0;
-				int newY = 0;
 				
-				if(i != References.snake.size() - 2){
-					snake.add(References.snake.get(i + 1));
-				} else {
-					Direction prevRect = References.snake.get(i - 1).getDirection();
-					if(prevRect == Direction.Down){
-						System.out.println("PrevRect_Down: " + prevRect);
-						if(direction == Direction.Down){
-							img = Pathes.Snake_Vertical;
-						} else if(direction == Direction.Left){
-							img = Pathes.Snake_Angel_4;
-						} else if(direction == Direction.Right){
-							img = Pathes.Snake_Angel_1;
-						}
-					} else if(prevRect == Direction.Left){
-						if(direction == Direction.Left){
-							img = Pathes.Snake_Vertical;
-						} else if(direction == Direction.Down){
-							img = Pathes.Snake_Angel_3;
-						} else if(direction == Direction.Up){
-							img = Pathes.Snake_Angel_4;
-						}
-					} else if(prevRect == Direction.Right){
-						if(direction == Direction.Down){
-							img = Pathes.Snake_Angel_3;
-						} else if(direction == Direction.Right){
-							img = Pathes.Snake_Horisontal;
-						} else if(direction == Direction.Up){
-							img = Pathes.Snake_Angel_1;
-						}
-					} else if(prevRect == Direction.Up){
-						if(direction == Direction.Left){
-							img = Pathes.Snake_Angel_3;
-						} else if(direction == Direction.Right){
-							img = Pathes.Snake_Angel_2;
-						} else if(direction == Direction.Up){
-							img = Pathes.Snake_Vertical;
-						}
+				Direction prevRect = References.snake.get(i - 1).getDirection();
+				if(prevRect == Direction.Down){
+					if(direction == Direction.Down){
+						img = Pathes.Snake_Vertical;
+					} else if(direction == Direction.Left){
+						img = Pathes.Snake_Angel_4;
+					} else if(direction == Direction.Right){
+						img = Pathes.Snake_Angel_1;
 					}
-					
-					if(!isBorder(oldX, oldY, Direction.Up) && direction == Direction.Up){
-						newX = oldX;
-						newY = oldY - 1;
-					} else if(!isBorder(oldX, oldY, Direction.Down) && direction == Direction.Down){
-						newX = oldX;
-						newY = oldY + 1;
-					} else if(!isBorder(oldX, oldY, Direction.Right) && direction == Direction.Right){
-						newX = oldX + 1;
-						newY = oldY;
-					} else if(!isBorder(oldX, oldY, Direction.Left) && direction == Direction.Left){
-						newX = oldX - 1;
-						newY = oldY;
+				} else if(prevRect == Direction.Left){
+					if(direction == Direction.Left){
+						img = Pathes.Snake_Horisontal;
+					} else if(direction == Direction.Down){
+						img = Pathes.Snake_Angel_3;
+					} else if(direction == Direction.Up){
+						img = Pathes.Snake_Angel_4;
 					}
-					
-					snake.add(new Rect(img, speed, type, direction, snakeType, newX, newY));
+				} else if(prevRect == Direction.Right){
+					if(direction == Direction.Down){
+						img = Pathes.Snake_Angel_3;
+					} else if(direction == Direction.Right){
+						img = Pathes.Snake_Horisontal;
+					} else if(direction == Direction.Up){
+						img = Pathes.Snake_Angel_1;
+					}
+				} else if(prevRect == Direction.Up){
+					if(direction == Direction.Left){
+						img = Pathes.Snake_Angel_3;
+					} else if(direction == Direction.Right){
+						img = Pathes.Snake_Angel_2;
+					} else if(direction == Direction.Up){
+						img = Pathes.Snake_Vertical;
+					}
 				}
+				
+				snake.add(new Rect(img, speed, type, direction, snakeType, oldX, oldY));
 			}
 			
 			if(References.snake.get(i).getSnakeType() == SnakeType.Head && i == References.snake.size() - 1){

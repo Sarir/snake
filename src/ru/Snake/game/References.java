@@ -17,7 +17,7 @@ public class References {
 	
 	public static int secondsToStart = 3;
 	
-	public static int gameTick = 3000;
+	public static int gameTick = 300;
 	
 	public static ArrayList<Rect> snake = new ArrayList<Rect>();
 	

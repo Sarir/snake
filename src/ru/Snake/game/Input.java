@@ -4,7 +4,6 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 
-import ru.Snake.SnakeMain;
 import ru.Snake.game.components.Direction;
 
 public class Input extends Thread{
