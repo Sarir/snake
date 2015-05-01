@@ -21,6 +21,10 @@ public class References {
 	
 	public static ArrayList<Rect> snake = new ArrayList<Rect>();
 	
+	public static ArrayList<Rect> apples = new ArrayList<Rect>();
+	
+	public static int grow = 0;
+	
 	public static void setCoord(int x, int y, Direction direct){
 		References.headX = x;
 		References.headY = y;
