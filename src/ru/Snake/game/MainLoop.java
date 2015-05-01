@@ -40,6 +40,11 @@ public class MainLoop extends Thread{
 		while(true){
 			draw();
 			gameLogic();
+			System.out.println("============================");
+			System.out.println("ArraySize: " + References.snake.size());
+			for(int i = 0; i < References.snake.size(); i++){
+				System.out.println("SnType: " + References.snake.get(i).getSnakeType());
+			}
 			try {
 				this.sleep(References.gameTick);
 			} catch (InterruptedException e) {
@@ -134,12 +139,12 @@ public class MainLoop extends Thread{
 		for(int i = 0; i < References.snake.size(); i++){
 			if(References.snake.get(i).getSnakeType() == SnakeType.Tail && i == 0){
 				String img = null;
-				int speed = References.snake.get(i + 1).getSpeed();
-				Type type = References.snake.get(i + 1).getType();
-				Direction direction = References.snake.get(i + 1).getDirection();
+				int speed = References.snake.get(i).getSpeed();
+				Type type = References.snake.get(i).getType();
+				Direction direction = References.snake.get(i).getDirection();
 				SnakeType snakeType = SnakeType.Tail;
-				int oldX = References.snake.get(i + 1).getX();
-				int oldY = References.snake.get(i + 1).getY();
+				int oldX = References.snake.get(i).getX();
+				int oldY = References.snake.get(i).getY();
 				int newX = 0;
 				int newY = 0;
 				
@@ -179,7 +184,6 @@ public class MainLoop extends Thread{
 					snake.add(References.snake.get(i + 1));
 				} else {
 					Direction prevRect = References.snake.get(i - 1).getDirection();
-					System.out.println("PrevRect: " + prevRect);
 					if(prevRect == Direction.Down){
 						System.out.println("PrevRect_Down: " + prevRect);
 						if(direction == Direction.Down){
@@ -190,7 +194,6 @@ public class MainLoop extends Thread{
 							img = Pathes.Snake_Angel_1;
 						}
 					} else if(prevRect == Direction.Left){
-						System.out.println("PrevRect_Left: " + prevRect);
 						if(direction == Direction.Left){
 							img = Pathes.Snake_Vertical;
 						} else if(direction == Direction.Down){
@@ -199,7 +202,6 @@ public class MainLoop extends Thread{
 							img = Pathes.Snake_Angel_4;
 						}
 					} else if(prevRect == Direction.Right){
-						System.out.println("PrevRect_Right: " + prevRect);
 						if(direction == Direction.Down){
 							img = Pathes.Snake_Angel_3;
 						} else if(direction == Direction.Right){
@@ -208,7 +210,6 @@ public class MainLoop extends Thread{
 							img = Pathes.Snake_Angel_1;
 						}
 					} else if(prevRect == Direction.Up){
-						System.out.println("PrevRect_Up: " + prevRect);
 						if(direction == Direction.Left){
 							img = Pathes.Snake_Angel_3;
 						} else if(direction == Direction.Right){
