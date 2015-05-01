@@ -12,6 +12,10 @@ public class References {
 	
 	public static Direction headDirection;
 	
+	public static int secondsToStart = 3;
+	
+	public static int gameTick = 500;
+	
 	public static void setCoord(int x, int y, Direction direct){
 		References.headX = x;
 		References.headY = y;
