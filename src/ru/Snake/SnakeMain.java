@@ -8,7 +8,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import ru.Snake.game.Input;
 import ru.Snake.game.MainLoop;
-import ru.Snake.game.References;
 import ru.Snake.game.components.Field;
 import ru.Snake.game.components.Rect;
 import ru.Snake.game.frames.Menu;
@@ -17,9 +16,7 @@ public class SnakeMain {
 
 	public static Field imageField;
 	
-	public static Rect[][] field = new Rect[References.x][References.y];
-	
-	//public static SnakeMain loop;
+	public static Rect[][] field;
 	
 	public static JFrame frame = new JFrame();
 	
@@ -31,23 +28,18 @@ public class SnakeMain {
 	
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		
-		if(!References.started){
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-						menu = new Menu();
-						SnakeMain.menu.setVisible(true);
-						menu.setLocationRelativeTo(null);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+					menu = new Menu();
+					SnakeMain.menu.setVisible(true);
+					menu.setLocationRelativeTo(null);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			});	
-			References.started = true;
-		}
-		//game = new MainLoop();
-		//menu.show();
+			}
+		});
 	}
 
 }

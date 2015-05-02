@@ -19,18 +19,20 @@ public class Input extends Thread{
 	        @SuppressWarnings("static-access")
 			@Override
 	        public boolean dispatchKeyEvent(KeyEvent ke) {
-	        	if(ke.getID() == ke.KEY_PRESSED){
-	        		if(ke.getKeyCode() == ke.VK_UP && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Down){
-	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Up);
-	        		} else if(ke.getKeyCode() == ke.VK_DOWN && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Up){
-	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Down);
-	        		} else if(ke.getKeyCode() == ke.VK_RIGHT && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Left){
-	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Right);
-	        		} else if(ke.getKeyCode() == ke.VK_LEFT && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Right){
-	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Left);
-	        		} else if(ke.getKeyCode() == ke.VK_ESCAPE){
-	        			MainLoop.gameOver(false);
-	        		}
+	        	if(References.started){
+		        	if(ke.getID() == ke.KEY_PRESSED){
+		        		if(ke.getKeyCode() == ke.VK_UP && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Down){
+		        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Up);
+		        		} else if(ke.getKeyCode() == ke.VK_DOWN && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Up){
+		        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Down);
+		        		} else if(ke.getKeyCode() == ke.VK_RIGHT && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Left){
+		        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Right);
+		        		} else if(ke.getKeyCode() == ke.VK_LEFT && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Right){
+		        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Left);
+		        		} else if(ke.getKeyCode() == ke.VK_ESCAPE){
+		        			MainLoop.gameOver(false);
+		        		}
+		        	}
 	        	}
 	        	return false;
 	        }

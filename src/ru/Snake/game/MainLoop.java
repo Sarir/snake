@@ -28,8 +28,10 @@ public class MainLoop extends Thread{
 	@SuppressWarnings("deprecation")
 	public MainLoop(int x, int y){
 		
-		width = 16 * (x + 1) + 6;
-		height = 16 * (y + 1) + 9;
+		width = 16 * x + 6;
+		height = 16 * y + 9;
+		
+		SnakeMain.field = new Rect[References.x][References.y];
 		
 		startGame();
 		init();
@@ -37,6 +39,7 @@ public class MainLoop extends Thread{
 		SnakeMain.menu.hide();
 		JOptionPane.showMessageDialog(SnakeMain.frame, "Press \" OK \" to start, after " + References.secondsToStart + " seconds!");
 		this.start();
+		References.started = true;
 	}
 	
 	@SuppressWarnings("static-access")
@@ -368,7 +371,11 @@ public class MainLoop extends Thread{
 		}
 		SnakeMain.frame.dispose();
 		SnakeMain.menu.show();
-		
+		References.apples.clear();
+		References.snake.clear();
+		References.score = 0;
+		References.gameTick = References.defaultGameTick;
+		References.started = false;
 		SnakeMain.game.stop();
 	}
 }

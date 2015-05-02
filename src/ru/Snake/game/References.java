@@ -9,7 +9,9 @@ public class References {
 
 	public static boolean started = false;
 	
-	public static int x = 10 + 1, y = 10 + 1;
+	public static int preX = 1, preY = 1;
+	
+	public static int x = 10 + preX, y = 10 + preY;
 	
 	public static int headX, headY;
 	
@@ -17,7 +19,9 @@ public class References {
 	
 	public static int secondsToStart = 3;
 	
-	public static int gameTick = 500;
+	public static final int defaultGameTick = 500; // Not changeable, this need for restart.
+	
+	public static int gameTick = References.defaultGameTick;
 	
 	public static int decrGameTick = 5;
 	

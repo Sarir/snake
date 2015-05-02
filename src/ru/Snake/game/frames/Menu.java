@@ -31,20 +31,6 @@ public class Menu extends JFrame {
 	private JSpinner spApple;
 	private JCheckBox boxMusic;
 
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					
-					Menu frame = new Menu();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
 	public Menu() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		setResizable(false);
@@ -96,7 +82,11 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				References.appleIncBy = (int) spApple.getValue();
 				References.music = boxMusic.isSelected();
-				SnakeMain.game = new MainLoop((int)spHeight.getValue(), (int)spWidth.getValue());
+				
+				References.x = (int)spHeight.getValue() + References.preX;
+				References.y = (int)spWidth.getValue() + References.preY;
+				
+				SnakeMain.game = new MainLoop(References.x, References.y);
 			}
 		});
 		btnStartGame.setBounds(10, 119, 203, 23);
