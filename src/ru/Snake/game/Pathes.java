@@ -14,4 +14,5 @@ public class Pathes {
 	public static final String Snake_Up = "/textures/Snake_up.png";
 	public static final String Snake_Vertical = "/textures/Snake_Vertical.png";
 	public static final String Snake = "/textures/Snake.png";
+	public static final String blackRect = "/textures/BlackRect.png";
 }

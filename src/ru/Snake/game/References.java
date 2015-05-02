@@ -19,7 +19,7 @@ public class References {
 	
 	public static int secondsToStart = 3;
 	
-	public static final int defaultGameTick = 500; // Not changeable, this need for restart. Default value = 500
+	public static final int defaultGameTick = 200; // Not changeable, this need for restart. Default value = 500
 	
 	public static int gameTick = References.defaultGameTick;
 	
@@ -28,6 +28,8 @@ public class References {
 	public static ArrayList<Rect> snake = new ArrayList<Rect>();
 	
 	public static ArrayList<Rect> apples = new ArrayList<Rect>();
+	
+	public static int tailX = 0, tailY = 0;
 	
 	public static int grow = 0;
 	
@@ -40,7 +42,6 @@ public class References {
 	public static void setCoord(int x, int y, Direction direct){
 		References.headX = x;
 		References.headY = y;
-		References.headDirection = direct;
-		
+		References.headDirection = direct;	
 	}
 }

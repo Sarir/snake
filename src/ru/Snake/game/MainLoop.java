@@ -35,11 +35,10 @@ public class MainLoop extends Thread{
 		
 		startGame();
 		init();
-		SnakeMain.frame.show();
+		SnakeMain.gameFrame.show();
 		SnakeMain.menu.hide();
-		JOptionPane.showMessageDialog(SnakeMain.frame, "Press \" OK \" to start, after " + References.secondsToStart + " seconds!");
+		JOptionPane.showMessageDialog(SnakeMain.gameFrame, "Press \" OK \" to start, after " + References.secondsToStart + " seconds!");
 		this.start();
-		References.started = true;
 	}
 	
 	@SuppressWarnings("static-access")
@@ -51,6 +50,7 @@ public class MainLoop extends Thread{
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
+		References.started = true;
 		// Loop
 		while(true){
 			draw();
@@ -63,25 +63,24 @@ public class MainLoop extends Thread{
 		}
 	}
 	
+	private void draw() {
+		SnakeMain.imageField.repaint();
+	}
+
 	private void init(){
-		SnakeMain.frame.setBounds(100, 100, width, height);
-		SnakeMain.frame.setLocationRelativeTo(null);
-		SnakeMain.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		SnakeMain.frame.setBackground(Color.BLACK);
-		SnakeMain.frame.setResizable(false);
-		SnakeMain.frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		SnakeMain.gameFrame.setBounds(100, 100, width, height);
+		SnakeMain.gameFrame.setLocationRelativeTo(null);
+		SnakeMain.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		SnakeMain.gameFrame.setBackground(Color.BLACK);
+		SnakeMain.gameFrame.setResizable(false);
+		SnakeMain.gameFrame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		
 		SnakeMain.imageField = new Field();
 		SnakeMain.imageField.setBackground(Color.BLACK);
 		SnakeMain.imageField.setDoubleBuffered(true);
-		SnakeMain.frame.getContentPane().add(SnakeMain.imageField, BorderLayout.CENTER);
+		SnakeMain.gameFrame.getContentPane().add(SnakeMain.imageField, BorderLayout.CENTER);
 		
-		draw();
-	}
-	
-	private void draw(){
-		SnakeMain.imageField.update(SnakeMain.imageField.getGraphics());
 	}
 	
 	private void startGame(){
@@ -163,6 +162,12 @@ public class MainLoop extends Thread{
 				}
 				
 				snake.add(i, new Rect(img, speed, type, direction, snakeType, x, y));
+				
+				//SnakeMain.field[References.snake.get(i).getX()][References.snake.get(i).getY()] = new Rect(null, 0, Type.Void, Direction.Null, SnakeType.Null, References.snake.get(i).getX(), References.snake.get(i).getY());
+				//draw(i);
+				
+				References.tailX = References.snake.get(i).getX();
+				References.tailY = References.snake.get(i).getY();
 			}
 			
 			if(References.snake.get(i).getSnakeType() == SnakeType.Body){
@@ -369,13 +374,15 @@ public class MainLoop extends Thread{
 		if(b){
 			JOptionPane.showMessageDialog(null, "Game Over! Your score: " + References.score);
 		}
-		SnakeMain.frame.dispose();
+		SnakeMain.gameFrame.dispose();
 		SnakeMain.menu.show();
 		References.apples.clear();
 		References.snake.clear();
 		References.score = 0;
 		References.gameTick = References.defaultGameTick;
 		References.started = false;
+		References.tailX = 0;
+		References.tailY = 0;
 		SnakeMain.game.stop();
 	}
 }

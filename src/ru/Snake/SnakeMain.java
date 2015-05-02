@@ -18,7 +18,7 @@ public class SnakeMain {
 	
 	public static Rect[][] field;
 	
-	public static JFrame frame = new JFrame();
+	public static JFrame gameFrame = new JFrame();
 	
 	public static Menu menu;
 	
