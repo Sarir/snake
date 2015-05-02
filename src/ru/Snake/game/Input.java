@@ -28,6 +28,8 @@ public class Input extends Thread{
 	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Right);
 	        		} else if(ke.getKeyCode() == ke.VK_LEFT && References.snake.get(References.snake.size() - 1).getDirection() != Direction.Right){
 	        			MainLoop.changeDirection(References.snake.get(References.snake.size() - 1), Direction.Left);
+	        		} else if(ke.getKeyCode() == ke.VK_ESCAPE){
+	        			MainLoop.gameOver(false);
 	        		}
 	        	}
 	        	return false;

@@ -1,5 +1,6 @@
 package ru.Snake.game;
 
+
 public class Pathes {
 	public static final String apple = "/textures/apple.png";
 	public static final String Snake_Angel_1 = "/textures/Snake_Angel_1.png";

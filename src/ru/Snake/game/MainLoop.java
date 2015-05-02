@@ -2,6 +2,7 @@ package ru.Snake.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,11 +19,24 @@ import ru.Snake.game.components.Type;
 
 public class MainLoop extends Thread{
 	
-	private int width = 16 * (References.x - 0) + 6, height = 16 * (References.y - 0) + 9;
+	private int width, height;
 	
-	public MainLoop(){
+	public URL musPickUp = getClass().getResource("/sounds/PickUp.wav");
+	public URL musPowerup = getClass().getResource("/sounds/Powerup.wav");
+	public URL musMove = getClass().getResource("/sounds/Move.wav");
+	
+	@SuppressWarnings("deprecation")
+	public MainLoop(int x, int y){
+		
+		width = 16 * (x + 1) + 6;
+		height = 16 * (y + 1) + 9;
+		
 		startGame();
 		init();
+		SnakeMain.frame.show();
+		SnakeMain.menu.hide();
+		JOptionPane.showMessageDialog(SnakeMain.frame, "Press \" OK \" to start, after " + References.secondsToStart + " seconds!");
+		this.start();
 	}
 	
 	@SuppressWarnings("static-access")
@@ -34,8 +48,6 @@ public class MainLoop extends Thread{
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		@SuppressWarnings("unused")
-		Input keyboard = new Input(); // Keyboard
 		// Loop
 		while(true){
 			draw();
@@ -77,7 +89,7 @@ public class MainLoop extends Thread{
 		}
 		
 		References.snake.add(new Rect(Pathes.Snake_Right, 0, Type.Snake, Direction.Right, SnakeType.Tail, 0, 0)); // Tail
-		References.snake.add(new Rect(Pathes.Snake_Horisontal, 0, Type.Snake, Direction.Right, SnakeType.Body, 1, 0));
+		References.snake.add(new Rect(Pathes.Snake_Horisontal, 0, Type.Snake, Direction.Right, SnakeType.Body, 1, 0)); // Body
 		References.snake.add(new Rect(Pathes.Snake_Left, 0, Type.Snake, Direction.Right, SnakeType.Head, 2, 0)); // Head
 		
 		for(int i = 0; i < References.snake.size(); i++){
@@ -99,9 +111,10 @@ public class MainLoop extends Thread{
 				   References.apples.get(i).getY() == References.snake.get(0).getY()){
 					References.apples.remove(i);
 					addApple();
-					References.grow++;
+					References.grow += References.appleIncBy;
 					References.score++;
 					References.gameTick -= References.decrGameTick;
+					new SoundSystem().playSound(musPickUp);
 				}
 			}
 		}
@@ -205,6 +218,7 @@ public class MainLoop extends Thread{
 					
 					References.grow--;
 					snake.add(new Rect(img, speed, type, direction, snakeType, oldX, oldY));
+					new SoundSystem().playSound(musPowerup);
 				}
 				
 				String img = null;
@@ -290,7 +304,7 @@ public class MainLoop extends Thread{
 					newY = oldY;
 					img = Pathes.Snake_Right;
 				} else if(isBorder(oldX, oldY, Direction.Up) || isBorder(oldX, oldY, Direction.Down) || isBorder(oldX, oldY, Direction.Right) || isBorder(oldX, oldY, Direction.Left)){
-					gameOver();
+					gameOver(true);
 				}
 				
 				snake.add(new Rect(img, speed, type, direction, snakeType, newX, newY));
@@ -311,9 +325,11 @@ public class MainLoop extends Thread{
 			int y = References.snake.get(i).getY();
 			
 			if(x == References.snake.get(References.snake.size() - 1).getX() && y == References.snake.get(References.snake.size() - 1).getY()){
-				gameOver();
+				gameOver(true);
 			}
 		}
+		
+		new SoundSystem().playSound(musMove);
 	}
 	
 	public static Rect changeDirection(Rect rect, Direction direct){
@@ -345,8 +361,14 @@ public class MainLoop extends Thread{
 		return false;
 	}
 	
-	private void gameOver(){
-		JOptionPane.showMessageDialog(null, "Game Over! Your score: " + References.score);
-		System.exit(0);
+	@SuppressWarnings("deprecation")
+	public static void gameOver(boolean b){
+		if(b){
+			JOptionPane.showMessageDialog(null, "Game Over! Your score: " + References.score);
+		}
+		SnakeMain.frame.dispose();
+		SnakeMain.menu.show();
+		
+		SnakeMain.game.stop();
 	}
 }
