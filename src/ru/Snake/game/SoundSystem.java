@@ -17,6 +17,7 @@ public class SoundSystem {
     private AudioFormat audioFormat;
     private SourceDataLine sourceLine;
     private URL fn;
+    private Thread th;
 
     /**
      * @param filename the name of the file that is going to be played
@@ -27,6 +28,7 @@ public class SoundSystem {
     		this.fn = filename;
     		
     		Runnable runner = new Runnable() {
+				@SuppressWarnings("deprecation")
 				public void run() {
 
 		            try {
@@ -68,10 +70,11 @@ public class SoundSystem {
 
 		            sourceLine.drain();
 		            sourceLine.close();
+		            th.stop();
 				}
 			};
 			
-			Thread th = new Thread(runner);
+			th = new Thread(runner);
 			th.start();
     	}
     }

@@ -19,7 +19,7 @@ public class References {
 	
 	public static int secondsToStart = 3;
 	
-	public static final int defaultGameTick = 500; // Not changeable, this need for restart.
+	public static final int defaultGameTick = 500; // Not changeable, this need for restart. Default value = 500
 	
 	public static int gameTick = References.defaultGameTick;
 	
